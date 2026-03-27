@@ -14,10 +14,10 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #38056C;
+            background: #FFFFFF;
             min-height: 100vh;
             overflow-x: hidden;
-            color: #fff;
+            color: #000000;
             margin: 0;
             padding: 0;
         }
@@ -37,12 +37,12 @@
             position: absolute;
             border-radius: 50%;
             animation: floatUp linear infinite;
-            opacity: 0.15;
+            opacity: 0.08;
         }
         @keyframes floatUp {
             0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.15; }
-            90% { opacity: 0.15; }
+            10% { opacity: 0.08; }
+            90% { opacity: 0.08; }
             100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
         }
 
@@ -55,21 +55,21 @@
         }
 
         header {
-            text-align: center;
+            text-align: left;
             padding: 30px 20px 20px;
         }
         header h1 {
-            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-size: 32px;
             font-weight: 900;
-            color: #79FF3A;
-            margin-bottom: 10px;
+            color: #38056C;
+            margin-bottom: 12px;
             font-family: 'Inter', sans-serif;
             letter-spacing: -0.02em;
         }
         header p {
-            margin-top: 8px;
-            font-size: 1.05rem;
-            color: #b8b5d0;
+            margin-top: 0;
+            font-size: 18px;
+            color: #000000;
             font-family: 'Inter', sans-serif;
             font-weight: 500;
         }
@@ -77,24 +77,25 @@
         .progress-area {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 16px;
             margin: 18px auto 28px;
             flex-wrap: wrap;
+            padding-left: 20px;
         }
         .progress-bar-wrap {
             flex: 1 1 280px;
             max-width: 500px;
             height: 22px;
-            background: rgba(255,255,255,0.08);
+            background: rgba(0,0,0,0.08);
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(0,0,0,0.1);
         }
         .progress-bar-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #79FF3A, #4CAF50);
+            background: linear-gradient(90deg, #38056C, #5a2a9e);
             border-radius: 12px;
             transition: width 0.4s cubic-bezier(.22,.61,.36,1);
             position: relative;
@@ -113,7 +114,7 @@
         .progress-text {
             font-weight: 700;
             font-size: 1rem;
-            color: #79FF3A;
+            color: #38056C;
             white-space: nowrap;
             font-family: 'Inter', sans-serif;
         }
@@ -127,22 +128,23 @@
 
         .scratch-card {
             position: relative;
-            background: linear-gradient(145deg, #4a1d8c, #2c0b52);
+            background: #FFFFFF;
             border-radius: 20px;
-            border: 2px solid rgba(121, 255, 58, 0.2);
+            border: 2px solid rgba(56, 5, 108, 0.15);
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
         .scratch-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
         }
         .scratch-card.revealed {
-            border-color: rgba(121, 255, 58, 0.6);
-            box-shadow: 0 0 30px rgba(121, 255, 58, 0.2);
+            border-color: rgba(56, 5, 108, 0.4);
+            box-shadow: 0 0 30px rgba(56, 5, 108, 0.1);
         }
         .scratch-card.scratching {
-            border-color: rgba(255,255,255,0.2);
+            border-color: rgba(0,0,0,0.1);
         }
 
         .card-content {
@@ -158,7 +160,7 @@
         .card-title {
             font-size: 1.15rem;
             font-weight: 800;
-            color: #79FF3A;
+            color: #38056C;
             margin-bottom: 12px;
             line-height: 1.4;
             font-family: 'Inter', sans-serif;
@@ -167,18 +169,18 @@
         .card-text {
             font-size: 0.95rem;
             line-height: 1.65;
-            color: #d4d0f0;
+            color: #000000;
             font-family: 'Inter', sans-serif;
             font-weight: 500;
         }
         .card-tip {
             margin-top: 14px;
             padding: 10px 14px;
-            background: rgba(121, 255, 58, 0.1);
-            border-left: 3px solid #79FF3A;
+            background: rgba(56, 5, 108, 0.05);
+            border-left: 3px solid #38056C;
             border-radius: 0 8px 8px 0;
             font-size: 0.88rem;
-            color: #b8ff8a;
+            color: #38056C;
             font-family: 'Inter', sans-serif;
             font-weight: 500;
         }
@@ -222,12 +224,13 @@
         .scratch-label span {
             font-weight: 700;
             font-size: 1rem;
-            color: #fff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            background: rgba(0,0,0,0.6);
+            color: #38056C;
+            text-shadow: none;
+            background: rgba(255,255,255,0.9);
             padding: 5px 12px;
             border-radius: 20px;
             font-family: 'Inter', sans-serif;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .scratch-percent {
@@ -237,14 +240,15 @@
             z-index: 4;
             font-size: 0.8rem;
             font-weight: 800;
-            color: #79FF3A;
-            background: rgba(0,0,0,0.5);
+            color: #38056C;
+            background: rgba(255,255,255,0.9);
             padding: 3px 10px;
             border-radius: 20px;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s;
             font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
         }
         .scratch-percent.visible {
             opacity: 1;
@@ -271,14 +275,14 @@
             to { opacity: 1; }
         }
         .modal {
-            background: linear-gradient(145deg, #4a1d8c, #2c0b52);
+            background: #FFFFFF;
             border-radius: 24px;
             padding: 40px;
             text-align: center;
             max-width: 500px;
             width: 100%;
-            border: 2px solid rgba(121, 255, 58, 0.5);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 2px solid rgba(56, 5, 108, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             animation: scaleIn 0.4s cubic-bezier(.22,.61,.36,1);
         }
         @keyframes scaleIn {
@@ -288,14 +292,14 @@
         .modal .trophy { font-size: 4rem; margin-bottom: 12px; }
         .modal h2 {
             font-size: 1.6rem;
-            color: #79FF3A;
+            color: #38056C;
             margin-bottom: 10px;
             font-family: 'Inter', sans-serif;
             font-weight: 800;
             letter-spacing: -0.02em;
         }
         .modal p {
-            color: #b8b5d0;
+            color: #000000;
             margin-bottom: 24px;
             line-height: 1.6;
             font-family: 'Inter', sans-serif;
@@ -309,13 +313,13 @@
             font-weight: 800;
             font-size: 1rem;
             cursor: pointer;
-            background: linear-gradient(135deg, #79FF3A, #4CAF50);
-            color: #1a1a2e;
+            background: linear-gradient(135deg, #38056C, #5a2a9e);
+            color: #FFFFFF;
             transition: transform 0.2s, box-shadow 0.2s;
         }
         .btn-primary:hover {
             transform: scale(1.05);
-            box-shadow: 0 6px 24px rgba(121, 255, 58, 0.5);
+            box-shadow: 0 6px 24px rgba(56, 5, 108, 0.4);
         }
 
         .confetti-piece {
@@ -335,6 +339,9 @@
             }
             .card-content {
                 padding: 18px;
+            }
+            .progress-area {
+                padding-left: 20px;
             }
         }
     </style>
@@ -429,7 +436,7 @@ function init() {
 
 function createParticles() {
     const container = document.getElementById('particles');
-    const colors = ['#79FF3A', '#4CAF50', '#8BC34A', '#CDDC39', '#9E9E9E'];
+    const colors = ['#38056C', '#5a2a9e', '#7c4ab3', '#9e6fc8', '#c99eff'];
     for (let i = 0; i < 30; i++) {
         const p = document.createElement('div');
         p.classList.add('particle');
@@ -501,26 +508,26 @@ function initScratch(canvas, label, pctEl, card, idx) {
 
     // Рисуем защитный слой
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = '#4a4a4a';
+    ctx.fillStyle = '#e0e0e0';
     ctx.fillRect(0, 0, w, h);
 
     const grad = ctx.createLinearGradient(0, 0, w, h);
-    grad.addColorStop(0, '#6b6b6b');
-    grad.addColorStop(0.25, '#4a4a4a');
-    grad.addColorStop(0.5, '#7a7a7a');
-    grad.addColorStop(0.75, '#5a5a5a');
-    grad.addColorStop(1, '#6b6b6b');
+    grad.addColorStop(0, '#f0f0f0');
+    grad.addColorStop(0.25, '#d0d0d0');
+    grad.addColorStop(0.5, '#e5e5e5');
+    grad.addColorStop(0.75, '#d5d5d5');
+    grad.addColorStop(1, '#e8e8e8');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
     // Добавляем текстуру
     for (let y = 0; y < h; y += 2) {
-        ctx.fillStyle = `rgba(${100 + Math.random()*50}, ${100 + Math.random()*50}, ${100 + Math.random()*50}, 1)`;
+        ctx.fillStyle = `rgba(${180 + Math.random()*40}, ${180 + Math.random()*40}, ${180 + Math.random()*40}, 1)`;
         ctx.fillRect(0, y, w, 1);
     }
 
     // Декоративные элементы
-    ctx.fillStyle = 'rgba(121, 255, 58, 0.3)';
+    ctx.fillStyle = 'rgba(56, 5, 108, 0.2)';
     ctx.font = '20px serif';
     for (let i = 0; i < 8; i++) {
         ctx.fillText('⏰', 20 + Math.random()*(w-40), 20 + Math.random()*(h-40));
@@ -692,7 +699,7 @@ function spawnCardConfetti(card) {
     const rect = card.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const colors = ['#79FF3A', '#4CAF50', '#8BC34A', '#CDDC39', '#FFD700'];
+    const colors = ['#38056C', '#5a2a9e', '#7c4ab3', '#9e6fc8', '#FFD700'];
     for (let i = 0; i < 20; i++) {
         const el = document.createElement('div');
         el.classList.add('confetti-piece');
@@ -709,7 +716,7 @@ function spawnCardConfetti(card) {
 }
 
 function fireFullConfetti() {
-    const colors = ['#79FF3A', '#4CAF50', '#8BC34A', '#CDDC39', '#FFD700', '#FF9800'];
+    const colors = ['#38056C', '#5a2a9e', '#7c4ab3', '#9e6fc8', '#FFD700', '#FF9800'];
     for (let i = 0; i < 120; i++) {
         setTimeout(() => {
             const el = document.createElement('div');
