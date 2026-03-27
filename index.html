@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Сроки, которые спасут от провала</title>
+    <style>
+        /* Базовый сброс для iframe */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #38056C;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Подключаем шрифт Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap');
+
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatUp linear infinite;
+            opacity: 0.15;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px 20px;
+        }
+        header h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            font-weight: 900;
+            color: #79FF3A;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.02em;
+        }
+        header p {
+            margin-top: 8px;
+            font-size: 1.05rem;
+            color: #b8b5d0;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .progress-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 18px auto 28px;
+            flex-wrap: wrap;
+        }
+        .progress-bar-wrap {
+            flex: 1 1 280px;
+            max-width: 500px;
+            height: 22px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #79FF3A, #4CAF50);
+            border-radius: 12px;
+            transition: width 0.4s cubic-bezier(.22,.61,.36,1);
+            position: relative;
+        }
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            animation: barShine 2s infinite;
+        }
+        @keyframes barShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .progress-text {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #79FF3A;
+            white-space: nowrap;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            padding-bottom: 40px;
+        }
+
+        .scratch-card {
+            position: relative;
+            background: linear-gradient(145deg, #4a1d8c, #2c0b52);
+            border-radius: 20px;
+            border: 2px solid rgba(121, 255, 58, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .scratch-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+        }
+        .scratch-card.revealed {
+            border-color: rgba(121, 255, 58, 0.6);
+            box-shadow: 0 0 30px rgba(121, 255, 58, 0.2);
+        }
+        .scratch-card.scratching {
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .card-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .card-icon {
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #79FF3A;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+        }
+        .card-text {
+            font-size: 0.95rem;
+            line-height: 1.65;
+            color: #d4d0f0;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .card-tip {
+            margin-top: 14px;
+            padding: 10px 14px;
+            background: rgba(121, 255, 58, 0.1);
+            border-left: 3px solid #79FF3A;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.88rem;
+            color: #b8ff8a;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .scratch-layer {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            cursor: grab;
+            z-index: 2;
+            border-radius: 18px;
+            touch-action: none;
+        }
+        .scratch-layer.removed {
+            display: none;
+        }
+
+        .scratch-label {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 3;
+            transition: opacity 0.3s;
+        }
+        .scratch-label.hidden {
+            opacity: 0;
+        }
+        .scratch-label .coin-icon {
+            font-size: 3rem;
+            margin-bottom: 8px;
+            animation: wobble 2s ease-in-out infinite;
+        }
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        .scratch-label span {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .scratch-percent {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            z-index: 4;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #79FF3A;
+            background: rgba(0,0,0,0.5);
+            padding: 3px 10px;
+            border-radius: 20px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .scratch-percent.visible {
+            opacity: 1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+        .modal-overlay.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .modal {
+            background: linear-gradient(145deg, #4a1d8c, #2c0b52);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            border: 2px solid rgba(121, 255, 58, 0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: scaleIn 0.4s cubic-bezier(.22,.61,.36,1);
+        }
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal .trophy { font-size: 4rem; margin-bottom: 12px; }
+        .modal h2 {
+            font-size: 1.6rem;
+            color: #79FF3A;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .modal p {
+            color: #b8b5d0;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+        .btn-primary {
+            padding: 14px 36px;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, #79FF3A, #4CAF50);
+            color: #1a1a2e;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 24px rgba(121, 255, 58, 0.5);
+        }
+
+        .confetti-piece {
+            position: fixed;
+            z-index: 200;
+            pointer-events: none;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+        }
+
+        @media (max-width: 600px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-content {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="app-container">
+    <header>
+        <h1>Сроки, которые спасут от провала</h1>
+        <p>Сотрите защитный слой и узнайте важное.</p>
+    </header>
+
+    <div class="progress-area">
+        <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">0 / 7 открыто</div>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="trophy">🎉</div>
+        <h2>Поздравляем!</h2>
+        <p id="modalMsg"></p>
+        <button class="btn-primary" onclick="closeModal()">Продолжить</button>
+    </div>
+</div>
+
+<script>
+// 7 карточек с обновленными текстами
+const CARDS = [
+    {
+        icon: "📄",
+        title: "Когда документы должны быть в тендерном отделе?",
+        text: "За 24 часа до дедлайна. Опоздали — ТО не гарантирует, что заявка улетит вовремя.",
+        tip: "Планируйте сдачу документов за день до крайнего срока"
+    },
+    {
+        icon: "📞",
+        title: "Когда звонить клиенту после победы?",
+        text: "В течение суток. Представиться, оставить контакты, уточнить подписанта.",
+        tip: "Первый звонок — самый важный для формирования доверия"
+    },
+    {
+        icon: "⏰",
+        title: "Сколько ждать ответа от линии бизнеса?",
+        text: "До 3 рабочих дней. Если молчат дольше — напомните. Они обязаны предупредить о задержке.",
+        tip: "Установите напоминание на 3-й день для контрольного звонка"
+    },
+    {
+        icon: "🤝",
+        title: "Когда просить ТО помочь с документами?",
+        text: "За 5 рабочих дней до дедлайна. Позже — не гарантируют.",
+        tip: "Чем раньше обратитесь, тем качественнее подготовят документы"
+    },
+    {
+        icon: "💰",
+        title: "Когда отправлять письмо о возврате обеспечения?",
+        text: "В течение 5 календарных дней после окончания тендера или исполнения договора.",
+        tip: "Не ждите — отправляйте письмо сразу после завершения"
+    },
+    {
+        icon: "⚖️",
+        title: "Что делать, если деньги не вернулись через 25 дней?",
+        text: "Запросить у юристов досудебную претензию и отправить заказчику. На 31 день — иск в суд.",
+        tip: "Соберите все документы: договор, акты, платёжные поручения"
+    },
+    {
+        icon: "📋",
+        title: "Сколько протоколов разногласий можно подать по 44-ФЗ?",
+        text: "Один. И то не для всех видов закупок. По 223-ФЗ — можно несколько.",
+        tip: "Внимательно читайте документацию перед подачей протокола"
+    }
+];
+
+let revealedCards = new Set();
+let scratchStarted = new Set();
+const totalCards = CARDS.length;
+let totalRevealed = 0;
+let totalStarted = 0;
+
+function init() {
+    createParticles();
+    buildCards();
+    updateProgress();
+}
+
+function createParticles() {
+    const container = document.getElementById('particles');
+    const colors = ['#79FF3A', '#4CAF50', '#8BC34A', '#CDDC39', '#9E9E9E'];
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const sz = Math.random() * 8 + 4;
+        p.style.width = sz + 'px';
+        p.style.height = sz + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+        p.style.animationDelay = (Math.random() * 15) + 's';
+        container.appendChild(p);
+    }
+}
+
+function buildCards() {
+    const grid = document.getElementById('cardsGrid');
+    grid.innerHTML = '';
+    
+    CARDS.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.classList.add('scratch-card');
+        if (revealedCards.has(idx)) card.classList.add('revealed');
+
+        const content = document.createElement('div');
+        content.classList.add('card-content');
+        content.innerHTML = `
+            <div class="card-icon">${item.icon}</div>
+            <div class="card-title">${item.title}</div>
+            <div class="card-text">${item.text}</div>
+            ${item.tip ? `<div class="card-tip">💡 ${item.tip}</div>` : ''}
+        `;
+        card.appendChild(content);
+
+        if (!revealedCards.has(idx)) {
+            const pctEl = document.createElement('div');
+            pctEl.classList.add('scratch-percent');
+            card.appendChild(pctEl);
+
+            const canvas = document.createElement('canvas');
+            canvas.classList.add('scratch-layer');
+            card.appendChild(canvas);
+
+            const label = document.createElement('div');
+            label.classList.add('scratch-label');
+            label.innerHTML = `<div class="coin-icon">🪙</div><span>Сотрите, чтобы узнать!</span>`;
+            card.appendChild(label);
+
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    initScratch(canvas, label, pctEl, card, idx);
+                });
+            });
+        }
+
+        grid.appendChild(card);
+    });
+}
+
+function initScratch(canvas, label, pctEl, card, idx) {
+    const rect = card.getBoundingClientRect();
+    const w = Math.round(rect.width);
+    const h = Math.round(rect.height);
+
+    if (w === 0 || h === 0) return;
+
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+    // Рисуем защитный слой
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#4a4a4a';
+    ctx.fillRect(0, 0, w, h);
+
+    const grad = ctx.createLinearGradient(0, 0, w, h);
+    grad.addColorStop(0, '#6b6b6b');
+    grad.addColorStop(0.25, '#4a4a4a');
+    grad.addColorStop(0.5, '#7a7a7a');
+    grad.addColorStop(0.75, '#5a5a5a');
+    grad.addColorStop(1, '#6b6b6b');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+
+    // Добавляем текстуру
+    for (let y = 0; y < h; y += 2) {
+        ctx.fillStyle = `rgba(${100 + Math.random()*50}, ${100 + Math.random()*50}, ${100 + Math.random()*50}, 1)`;
+        ctx.fillRect(0, y, w, 1);
+    }
+
+    // Декоративные элементы
+    ctx.fillStyle = 'rgba(121, 255, 58, 0.3)';
+    ctx.font = '20px serif';
+    for (let i = 0; i < 8; i++) {
+        ctx.fillText('⏰', 20 + Math.random()*(w-40), 20 + Math.random()*(h-40));
+    }
+
+    ctx.globalCompositeOperation = 'destination-in';
+    roundRectPath(ctx, 0, 0, w, h, 18);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    ctx.globalCompositeOperation = 'destination-out';
+
+    let isDrawing = false;
+    let labelHidden = false;
+    let hasStarted = false;
+    let isRevealed = false;
+    const totalPixels = w * h;
+    const brushSize = 30;
+
+    let lastX = null, lastY = null;
+
+    function getPos(e) {
+        const r = canvas.getBoundingClientRect();
+        const t = e.touches ? e.touches[0] : e;
+        return { x: t.clientX - r.left, y: t.clientY - r.top };
+    }
+
+    function drawBrush(x, y) {
+        ctx.beginPath();
+        ctx.arc(x, y, brushSize, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    function drawLine(x1, y1, x2, y2) {
+        const dist = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+        const steps = Math.max(Math.ceil(dist / 4), 1);
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const x = x1 + (x2 - x1) * t;
+            const y = y1 + (y2 - y1) * t;
+            drawBrush(x, y);
+        }
+    }
+
+    function scratch(pos) {
+        if (!hasStarted) {
+            hasStarted = true;
+            scratchStarted.add(idx);
+            card.classList.add('scratching');
+            pctEl.classList.add('visible');
+            updateProgress();
+        }
+        if (!labelHidden) {
+            label.classList.add('hidden');
+            labelHidden = true;
+        }
+        if (lastX !== null) {
+            drawLine(lastX, lastY, pos.x, pos.y);
+        } else {
+            drawBrush(pos.x, pos.y);
+        }
+        lastX = pos.x;
+        lastY = pos.y;
+    }
+
+    function checkReveal() {
+        if (isRevealed) return;
+        const imageData = ctx.getImageData(0, 0, w, h);
+        let cleared = 0;
+        for (let i = 3; i < imageData.data.length; i += 4) {
+            if (imageData.data[i] === 0) cleared++;
+        }
+        const pct = Math.round((cleared / totalPixels) * 100);
+        pctEl.textContent = pct + '%';
+
+        if (pct >= 50) {
+            isRevealed = true;
+            revealCard(canvas, label, pctEl, card, idx);
+        }
+    }
+
+    canvas.addEventListener('mousedown', e => {
+        isDrawing = true;
+        lastX = null; lastY = null;
+        scratch(getPos(e));
+    });
+    canvas.addEventListener('mousemove', e => {
+        if (isDrawing) scratch(getPos(e));
+    });
+    canvas.addEventListener('mouseup', () => {
+        isDrawing = false;
+        lastX = null; lastY = null;
+        checkReveal();
+    });
+    canvas.addEventListener('mouseleave', () => {
+        if (isDrawing) {
+            isDrawing = false;
+            lastX = null; lastY = null;
+            checkReveal();
+        }
+    });
+
+    canvas.addEventListener('touchstart', e => {
+        e.preventDefault();
+        isDrawing = true;
+        lastX = null; lastY = null;
+        scratch(getPos(e));
+    }, {passive: false});
+    canvas.addEventListener('touchmove', e => {
+        e.preventDefault();
+        if (isDrawing) scratch(getPos(e));
+    }, {passive: false});
+    canvas.addEventListener('touchend', e => {
+        isDrawing = false;
+        lastX = null; lastY = null;
+        checkReveal();
+    });
+}
+
+function revealCard(canvas, label, pctEl, card, idx) {
+    canvas.style.transition = 'opacity 0.5s ease';
+    canvas.style.opacity = '0';
+    label.style.transition = 'opacity 0.3s';
+    label.style.opacity = '0';
+    pctEl.style.transition = 'opacity 0.3s';
+    pctEl.style.opacity = '0';
+
+    setTimeout(() => {
+        canvas.classList.add('removed');
+        label.remove();
+        pctEl.remove();
+    }, 500);
+
+    card.classList.remove('scratching');
+    card.classList.add('revealed');
+    revealedCards.add(idx);
+    updateProgress();
+    spawnCardConfetti(card);
+
+    if (revealedCards.size === totalCards) {
+        setTimeout(() => showModal(), 800);
+    }
+}
+
+function updateProgress() {
+    totalRevealed = revealedCards.size;
+    totalStarted = scratchStarted.size;
+    const effectiveCount = totalRevealed + (totalStarted - totalRevealed) * 0.3;
+    const pct = totalCards > 0 ? (effectiveCount / totalCards) * 100 : 0;
+    document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
+    let label = `${totalRevealed} / ${totalCards} открыто`;
+    const inProgress = totalStarted - totalRevealed;
+    if (inProgress > 0) label += ` (ещё ${inProgress} начато)`;
+    document.getElementById('progressText').textContent = label;
+}
+
+function showModal() {
+    const msg = document.getElementById('modalMsg');
+    msg.innerHTML = `Отлично! Вы узнали все <b>${totalCards} важных сроков</b>!<br><br>Теперь вы точно ничего не пропустите и спасёте свои проекты от провала! 🚀`;
+    document.getElementById('modalOverlay').classList.add('show');
+    fireFullConfetti();
+}
+
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function spawnCardConfetti(card) {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const colors = ['#79FF3A', '#4CAF50', '#8BC34A', '#CDDC39', '#FFD700'];
+    for (let i = 0; i < 20; i++) {
+        const el = document.createElement('div');
+        el.classList.add('confetti-piece');
+        el.style.left = cx + (Math.random()-0.5)*80 + 'px';
+        el.style.top = cy + (Math.random()-0.5)*60 + 'px';
+        el.style.width = (Math.random()*8+4) + 'px';
+        el.style.height = (Math.random()*8+4) + 'px';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        el.style.animationDuration = (Math.random()*1.5+1) + 's';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+    }
+}
+
+function fireFullConfetti() {
+    const colors = ['#79FF3A', '#4CAF50', '#8BC34A', '#CDDC39', '#FFD700', '#FF9800'];
+    for (let i = 0; i < 120; i++) {
+        setTimeout(() => {
+            const el = document.createElement('div');
+            el.classList.add('confetti-piece');
+            el.style.left = Math.random()*100 + 'vw';
+            el.style.top = '-20px';
+            el.style.width = (Math.random()*10+5) + 'px';
+            el.style.height = (Math.random()*10+5) + 'px';
+            el.style.background = colors[Math.floor(Math.random()*colors.length)];
+            el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            el.style.animationDuration = (Math.random()*2+2) + 's';
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 5000);
+        }, i * 25);
+    }
+}
+
+function roundRectPath(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.lineTo(x+w-r, y);
+    ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    ctx.lineTo(x+w, y+h-r);
+    ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    ctx.lineTo(x+r, y+h);
+    ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    ctx.lineTo(x, y+r);
+    ctx.quadraticCurveTo(x, y, x+r, y);
+    ctx.closePath();
+}
+
+window.addEventListener('resize', () => {
+    buildCards();
+});
+
+init();
+</script>
+</body>
+</html>
